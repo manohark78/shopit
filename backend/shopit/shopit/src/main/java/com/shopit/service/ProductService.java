@@ -1,6 +1,6 @@
 package com.shopit.service;
 
-import com.shopit.Repository.ProductRepository;
+import com.shopit.repository.ProductRepository;
 import com.shopit.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,15 +25,20 @@ public class ProductService {
     }
 
     public Product addProduct(Product product, MultipartFile imageFile) throws IOException {
-        product.setImageName(imageFile.getOriginalFilename());
-        product.setImageType(imageFile.getContentType());
-        product.setImageDate(imageFile.getBytes());
+        if (imageFile != null && !imageFile.isEmpty()) {
+            product.setImageName(imageFile.getOriginalFilename());
+            product.setImageType(imageFile.getContentType());
+            product.setImageData(imageFile.getBytes());
+        }
         return productRepository.save(product);
     }
     public Product updateProduct(int id, Product product, MultipartFile imageFile) throws IOException {
-        product.setImageDate(imageFile.getBytes());
-        product.setImageName(imageFile.getOriginalFilename());
-        product.setImageType(imageFile.getContentType());
+        product.setId(id);
+        if (imageFile != null && !imageFile.isEmpty()) {
+            product.setImageData(imageFile.getBytes());
+            product.setImageName(imageFile.getOriginalFilename());
+            product.setImageType(imageFile.getContentType());
+        }
         return productRepository.save(product);
     }
 

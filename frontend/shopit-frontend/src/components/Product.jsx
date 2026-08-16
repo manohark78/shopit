@@ -16,7 +16,7 @@ const Product = () => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/product/${id}`
+          `/product/${id}`
         );
         setProduct(response.data);
         if (response.data.imageName) {
@@ -29,7 +29,7 @@ const Product = () => {
 
     const fetchImage = async () => {
       const response = await axios.get(
-        `http://localhost:8080/api/product/${id}/image`,
+        `/product/${id}/image`,
         { responseType: "blob" }
       );
       setImageUrl(URL.createObjectURL(response.data));
@@ -40,8 +40,8 @@ const Product = () => {
 
   const deleteProduct = async () => {
     try {
-      await axios.delete(`http://localhost:8080/api/product/${id}`);
-      removeFromCart(id);
+      await axios.delete(`/product/${id}`);
+      removeFromCart(Number(id));
       console.log("Product deleted successfully");
       alert("Product deleted successfully");
       refreshData();
@@ -82,11 +82,11 @@ const Product = () => {
             <span style={{ fontSize: "1.2rem", fontWeight: 'lighter' }}>
               {product.category}
             </span>
-            <p className="release-date" style={{ marginBottom: "2rem" }}>
+            <div className="release-date" style={{ marginBottom: "2rem" }}>
               
               <h6>Listed : <span> <i> {new Date(product.releaseDate).toLocaleDateString()}</i></span></h6>
               {/* <i> {new Date(product.releaseDate).toLocaleDateString()}</i> */}
-            </p>
+            </div>
             </div>
             
            

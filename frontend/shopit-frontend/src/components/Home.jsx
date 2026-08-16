@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import axios from "../axios";
 import AppContext from "../Context/Context";
 import unplugged from "../assets/unplugged.png"
 
@@ -23,7 +23,7 @@ const Home = ({ selectedCategory }) => {
           data.map(async (product) => {
             try {
               const response = await axios.get(
-                `http://localhost:8080/api/product/${product.id}/image`,
+                `/product/${product.id}/image`,
                 { responseType: "blob" }
               );
               const imageUrl = URL.createObjectURL(response.data);
@@ -152,23 +152,23 @@ const Home = ({ selectedCategory }) => {
                         className="card-text"
                         style={{ fontWeight: "600", fontSize: "1.1rem",marginBottom:'5px' }}
                       >
-                        <i class="bi bi-currency-rupee"></i>
+                        <i className="bi bi-currency-rupee"></i>
                         {price}
                       </h5>
                     </div>
-                    <button
-                      className="btn-hover color-9"
-                      style={{margin:'10px 25px 0px '  }}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        addToCart(product);
-                      }}
-                      disabled={!productAvailable}
-                    >
-                      {productAvailable ? "Add to Cart" : "Out of Stock"}
-                    </button> 
                   </div>
                 </Link>
+                <button
+                  className="btn-hover color-9"
+                  style={{margin:'10px 25px 10px '  }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    addToCart(product);
+                  }}
+                  disabled={!productAvailable}
+                >
+                  {productAvailable ? "Add to Cart" : "Out of Stock"}
+                </button>
               </div>
             );
           })

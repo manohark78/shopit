@@ -1,4 +1,4 @@
-package com.shopit.Repository;
+package com.shopit.repository;
 
 import com.shopit.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;

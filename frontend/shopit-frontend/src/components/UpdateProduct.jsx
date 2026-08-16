@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "../axios";
 
 const UpdateProduct = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState({});
   const [image, setImage] = useState();
   const [updateProduct, setUpdateProduct] = useState({
@@ -22,13 +23,13 @@ const UpdateProduct = () => {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/product/${id}`
+          `/product/${id}`
         );
 
         setProduct(response.data);
       
         const responseImage = await axios.get(
-          `http://localhost:8080/api/product/${id}/image`,
+          `/product/${id}/image`,
           { responseType: "blob" }
         );
        const imageFile = await converUrlToFile(responseImage.data,response.data.imageName)
@@ -67,7 +68,7 @@ const UpdateProduct = () => {
 
   console.log("formData : ", updatedProduct)
     axios
-      .put(`http://localhost:8080/api/product/${id}`, updatedProduct, {
+      .put(`/product/${id}`, updatedProduct, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -75,6 +76,7 @@ const UpdateProduct = () => {
       .then((response) => {
         console.log("Product updated successfully:", updatedProduct);
         alert("Product updated successfully!");
+        navigate("/");
       })
       .catch((error) => {
         console.error("Error updating product:", error);
@@ -169,12 +171,12 @@ const UpdateProduct = () => {
               id="category"
             >
               <option value="">Select category</option>
-              <option value="laptop">Laptop</option>
-              <option value="headphone">Headphone</option>
-              <option value="mobile">Mobile</option>
-              <option value="electronics">Electronics</option>
-              <option value="toys">Toys</option>
-              <option value="fashion">Fashion</option>
+              <option value="Laptop">Laptop</option>
+              <option value="Headphone">Headphone</option>
+              <option value="Mobile">Mobile</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Toys">Toys</option>
+              <option value="Fashion">Fashion</option>
             </select>
           </div>
 
@@ -197,8 +199,8 @@ const UpdateProduct = () => {
               <h6>Image</h6>
             </label>
             <img
-              src={image ? URL.createObjectURL(image) : "Image unavailable"}
-              alt={product.imageName}
+              src={image ? URL.createObjectURL(image) : ""}
+              alt={image ? product.imageName : "Image unavailable"}
               style={{
                 width: "100%",
                 height: "180px",

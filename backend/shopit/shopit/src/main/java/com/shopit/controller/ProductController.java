@@ -40,7 +40,7 @@ public class ProductController {
 
     @PostMapping("/product")
     public ResponseEntity<?> addProduct(@RequestPart Product product,
-                                        @RequestPart MultipartFile imageFile){
+                                        @RequestPart(value = "imageFile", required = false) MultipartFile imageFile){
         try{
             Product product1 = service.addProduct(product, imageFile);
             return new ResponseEntity<>(product1, HttpStatus.OK);
@@ -54,7 +54,10 @@ public class ProductController {
     @GetMapping("/product/{id}/image")
     public ResponseEntity<byte[]> getImageByProductId(@PathVariable int id){
         Product product = service.getProductById(id);
-        byte[] imageFile = product.getImageDate();
+        if (product == null || product.getImageData() == null) {
+            return ResponseEntity.notFound().build();
+        }
+        byte[] imageFile = product.getImageData();
 
         return ResponseEntity.ok()
                 .contentType(MediaType.valueOf(product.getImageType()))
@@ -64,14 +67,14 @@ public class ProductController {
 
     @PutMapping("/product/{id}")
     public ResponseEntity<String> updateProduct(@PathVariable int id, @RequestPart Product product,
-                                                @RequestPart MultipartFile imageFile){
+                                                @RequestPart(value = "imageFile", required = false) MultipartFile imageFile){
         Product product1 = null;
         try{
             product1 = service.updateProduct(id, product, imageFile);
         } catch (IOException e) {
             return new ResponseEntity<>("Failed to Update", HttpStatus.BAD_REQUEST);
         }
-        if(product != null)
+        if(product1 != null)
             return new ResponseEntity<>("Product updated successfully", HttpStatus.OK);
         else
             return new ResponseEntity<>("Failed to Update", HttpStatus.BAD_REQUEST);

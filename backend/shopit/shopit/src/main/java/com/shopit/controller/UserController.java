@@ -1,6 +1,6 @@
 package com.shopit.controller;
 
-import com.shopit.Repository.UserRepository;
+import com.shopit.repository.UserRepository;
 import com.shopit.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,6 +59,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
     }
 
+    @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers(){
         return ResponseEntity.ok(userRepository.findAll());
 }

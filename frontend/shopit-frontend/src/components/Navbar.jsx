@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Home from "./Home"
-import axios from "axios";
+import axios from "../axios";
 import { Link } from "react-router-dom";
 // import { json } from "react-router-dom";
 // import { BiSunFill, BiMoon } from "react-icons/bi";
@@ -23,7 +23,7 @@ const Navbar = ({ onSelectCategory, onSearch }) => {
 
   const fetchData = async (value) => {
     try {
-      const response = await axios.get("http://localhost:8080/api/products");
+      const response = await axios.get("/products");
       setSearchResults(response.data);
       console.log(response.data);
     } catch (error) {
@@ -37,7 +37,7 @@ const Navbar = ({ onSelectCategory, onSearch }) => {
       setShowSearchResults(true)
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/products/search?keyword=${value}`
+        `/products/search?keyword=${value}`
       );
       setSearchResults(response.data);
       setNoResults(response.data.length === 0);
@@ -128,26 +128,26 @@ const Navbar = ({ onSelectCategory, onSearch }) => {
             >
               <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                  <a className="nav-link active" aria-current="page" href="/">
+                  <Link className="nav-link active" aria-current="page" to="/">
                     Home
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="/add_product">
+                  <Link className="nav-link" to="/add_product">
                     Add Product
-                  </a>
+                  </Link>
                 </li>
 
                 <li className="nav-item dropdown">
-                  <a
+                  <Link
                     className="nav-link dropdown-toggle"
-                    href="/"
+                    to="/"
                     role="button"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
                     Categories
-                  </a>
+                  </Link>
 
                   <ul className="dropdown-menu">
                     {categories.map((category) => (
@@ -173,14 +173,14 @@ const Navbar = ({ onSelectCategory, onSearch }) => {
                 )}
               </button>
               <div className="d-flex align-items-center cart">
-                <a href="/cart" className="nav-link text-dark">
+                <Link to="/cart" className="nav-link text-dark">
                   <i
                     className="bi bi-cart me-2"
                     style={{ display: "flex", alignItems: "center" }}
                   >
                     Cart
                   </i>
-                </a>
+                </Link>
                 {/* <form className="d-flex" role="search" onSubmit={handleSearch} id="searchForm"> */}
                 <input
                   className="form-control me-2"
@@ -197,15 +197,15 @@ const Navbar = ({ onSelectCategory, onSearch }) => {
                     {searchResults.length > 0 ? (  
                         searchResults.map((result) => (
                           <li key={result.id} className="list-group-item">
-                            <a href={`/product/${result.id}`} className="search-result-link">
+                            <Link to={`/product/${result.id}`} className="search-result-link">
                             <span>{result.name}</span>
-                            </a>
+                            </Link>
                           </li>
                         ))
                     ) : (
                       noResults && (
                         <p className="no-results-message">
-                          No Prouduct with such Name
+                          No product with such name
                         </p>
                       )
                     )}
